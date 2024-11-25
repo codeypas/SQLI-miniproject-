@@ -8,7 +8,7 @@ if (!isset($_SESSION['userid'])) {
     exit();
 }
 
-$uid = $_SESSION['userid']; // Retrieve user ID from session
+$uid = $_SESSION['userid']; // Retrieve user ID from sesion
 
 // Fetch user details
 $sql = "SELECT uname, name, phone, photo FROM user WHERE id=$uid";
