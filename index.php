@@ -1,42 +1,4 @@
-<!-- vulnerable code -->
-
 <?php
-session_start(); 
-
-include('connection.php');
-
-if (isset($_SESSION['username'])) {
-    // If user is logged in, redirect to home.php
-    header('Location: home.php');
-    exit();  
-}
-
-if (isset($_POST['submit'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['pswd']);
-
-
-    $stmt = $conn->prepare("SELECT * FROM user WHERE uname = ? AND upwd = ?");
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user) {
-        $_SESSION['userid'] = $user['id'];
-        $_SESSION['username'] = $user['uname'];
-        header('Location: home.php'); 
-        exit();
-    } else {
-        $error_message = "Invalid username or password";
-    }
-}
-?>
-
-<!-- safe code -->
-
-
-<!-- <?php
 session_start(); 
 
 include('connection.php');
@@ -50,22 +12,58 @@ if (isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['pswd']);
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE uname = ? AND upwd = ?");
-    $stmt->bind_param("ss", $username, $password);
+    // Query to get user information and failed attempts count
+    $stmt = $conn->prepare("SELECT * FROM user WHERE uname = ?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
     if ($user) {
-        $_SESSION['userid'] = $user['id'];
-        $_SESSION['username'] = $user['uname'];
-        header('Location: home.php'); 
-        exit();
+        // Check if the user has exceeded the failed attempts limit
+        if ($user['failed_attempts'] >= 3) {
+            $last_failed_time = strtotime($user['last_failed_attempt']);
+            $current_time = time();
+            $time_diff = $current_time - $last_failed_time;
+
+            // If it's been more than 10 minutes, reset the failed attempts
+            if ($time_diff > 600) {
+                $reset_stmt = $conn->prepare("UPDATE user SET failed_attempts = 0 WHERE id = ?");
+                $reset_stmt->bind_param("i", $user['id']);
+                $reset_stmt->execute();
+            } else {
+                // Display message for too many failed attempts
+                echo "<script>alert('Too many failed login attempts. Please check your email.');</script>";
+
+                $error_message = "Too many failed login attempts. Please check your email.";
+            }
+        } else {
+            // Check password using password_verify()
+            if (password_verify($password, $user['upwd'])) {
+                $_SESSION['userid'] = $user['id'];
+                $_SESSION['username'] = $user['uname'];
+
+                // Reset failed attempts after successful login
+                $stmt_reset = $conn->prepare("UPDATE user SET failed_attempts = 0 WHERE id = ?");
+                $stmt_reset->bind_param("i", $user['id']);
+                $stmt_reset->execute();
+
+                header('Location: home.php');
+                exit();
+            } else {
+                // Increment failed attempts if password is incorrect
+                $stmt_failed = $conn->prepare("UPDATE user SET failed_attempts = failed_attempts + 1, last_failed_attempt = NOW() WHERE id = ?");
+                $stmt_failed->bind_param("i", $user['id']);
+                $stmt_failed->execute();
+
+                $error_message = "Invalid username or password";
+            }
+        }
     } else {
         $error_message = "Invalid username or password";
     }
 }
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">

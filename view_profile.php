@@ -8,16 +8,18 @@ if (!isset($_SESSION['userid'])) {
     exit();
 }
 
-$uid = $_SESSION['userid']; // Retrieve user ID from sesion
+$uid = $_SESSION['userid']; // Retrieve user ID from session
 
-// Fetch user details
-$sql = "SELECT uname, name, phone, photo FROM user WHERE id=$uid";
-$result = mysqli_query($conn, $sql);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    $user = mysqli_fetch_assoc($result);
+// Fetch user details using a prepared statement
+$sql = "SELECT uname, name, phone, photo FROM user WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $uid);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result && $result->num_rows > 0) {
+    $user = $result->fetch_assoc();
 } else {
-    echo "Error fetching user details: " . mysqli_error($conn);
+    echo "Error fetching user details.";
     exit();
 }
 ?>
@@ -34,7 +36,8 @@ if ($result && mysqli_num_rows($result) > 0) {
 <body>
 <div class="container mt-3">
     <h2>User Profile</h2>
-    <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+    <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name']); ?></p> 
+<!--  -->
     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['uname']); ?></p>
     <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone']); ?></p>
     
