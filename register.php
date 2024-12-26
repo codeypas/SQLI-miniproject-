@@ -14,8 +14,11 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result_check) > 0) {
         echo "<div class='alert alert-danger'>User already exists. Please choose a different username.</div>";
     } else {
+        // Hash the password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
         // Insert new user into the database
-        $sql = "INSERT INTO user (uname, upwd, name) VALUES ('$username', '$password', '$name')";
+        $sql = "INSERT INTO user (uname, upwd, name) VALUES ('$username', '$hashed_password', '$name')";
         if (mysqli_query($conn, $sql)) {
             echo "<div class='alert alert-success'>Registration successful. You can now <a href='index.php'>login</a>.</div>";
         } else {
