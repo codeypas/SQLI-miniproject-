@@ -87,7 +87,7 @@
         body {
             background-color: #f4f6f9;
         }
-        .login-container {
+        .login-container  {
             max-width: 400px;
             margin: 0 auto;
             background-color: white;
