@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['pswd']);
 
-    // Query to get user information and failed attempts count
+    // Query for information and failed attemptCount
     $stmt = $conn->prepare("SELECT * FROM user WHERE uname = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
                 $error_message = "Too many failed login attempts. Please check your email.";
             }
         } else {
-            // Check password using password_verify()
+            // Check password
             if (password_verify($password, $user['upwd'])) {
                 $_SESSION['userid'] = $user['id'];
                 $_SESSION['username'] = $user['uname'];
