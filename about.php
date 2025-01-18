@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>About Us - SQLI Prevention and Detection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <style>
@@ -12,8 +12,8 @@
             background-color: #f4f6f9;
         }
 
-        .contact-container {
-            max-width: 600px;
+        .about-container {
+            max-width: 800px;
             margin: 50px auto;
             background: #fff;
             border-radius: 10px;
@@ -21,19 +21,15 @@
             padding: 20px;
         }
 
-        .contact-container h2 {
+        .about-container h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
         }
 
-        .contact-container .form-label {
-            font-weight: bold;
-        }
-
-        .contact-container button {
-            background-color: #007bff;
-            color: white;
+        .about-container p {
+            color: #555;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -55,10 +51,10 @@
           <a class="nav-link" href="register.php">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="about.php">About</a>
+          <a class="nav-link active" href="about.php">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="contact.php">Contact</a>
+          <a class="nav-link" href="contact.php">Contact</a>
         </li>
         <?php if (isset($_SESSION['username'])): ?>
           <li class="nav-item">
@@ -70,24 +66,21 @@
   </div>
 </nav>
 
-<!-- Contact Form -->
-<div class="contact-container">
-    <h2>Contact Us</h2>
-    <form method="post" action="process_contact.php">
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Send Message</button>
-    </form>
+<!-- About Section -->
+<div class="about-container">
+    <h2>About Us</h2>
+    <section>
+        <h3>Our Mission</h3>
+        <p>Welcome to our website dedicated to SQL Injection (SQLI) prevention and detection. Our mission is to provide resources and tools to help developers secure their applications against SQL Injection attacks.</p>
+    </section>
+    <section>
+        <h3>What is SQL Injection?</h3>
+        <p>SQL Injection is a code injection technique that exploits a security vulnerability in an application's software. It allows attackers to interfere with the queries that an application makes to its database, potentially leading to unauthorized access to sensitive data.</p>
+    </section>
+    <section>
+        <h3>How We Help</h3>
+        <p>We offer comprehensive guides, tutorials, and tools to help you understand and implement best practices for preventing and detecting SQL Injection attacks. Our goal is to make the web a safer place by empowering developers with the knowledge they need to secure their applications.</p>
+    </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
