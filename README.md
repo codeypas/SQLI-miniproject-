@@ -1,111 +1,90 @@
-# SQL Injection & Brute Force Attack Demonstration
+# SQL Injection & Brute Force Attack Demonstration 
 
-## 📌 Overview
-This project demonstrates **SQL Injection (SQLI) vulnerabilities** and **brute-force attack techniques** in a PHP-based login system. It is created for **educational purposes** to help students understand web security flaws and how to prevent them.
+A demonstration project showcasing SQL Injection vulnerabilities in PHP-based login systems and their prevention using secure coding practices.  
 
----
+## 📌 Project Overview  
 
-## 🚀 Technologies Used
+This project is designed for educational purposes as mini project of Cybersecurity course to demonstrate SQL injection vulnerabilities, brute-force attacks, and mitigation techniques using PHP, MySQL, PHPMailer, and security tools like Hydra.  
 
-- **Frontend:** HTML, CSS, Bootstrap  
-- **Backend:** PHP, MySQL  
-- **Security Testing:** Hydra (for brute-force attack)  
-- **Email Handling:** PHPMailer  
-- **Local Server:** MAMP (for macOS/Linux testing)  
-- **Operating System:** Linux (for penetration testing)  
+## 🚀 Features  
 
----
+✅ Secure **User Authentication** (Login & Registration)  
+✅ **SQL Injection Protection** using prepared statements  
+✅ **Brute-force prevention** techniques  
+✅ **Email verification** with **PHPMailer**  
+✅ **Account Lockout Mechanism** for failed attempts  
+✅ **Two-Factor Authentication (2FA)** implementation  
+✅ **Security Headers** for better protection 
 
-## 📂 Project Structure
+## 📂 Project Structure  
 
 ```
-/SQLI-miniproject
-│── /assets/               # CSS & JS files
-│── /database/             # Database scripts
-│── /includes/             # Connection & helper files
-│── /pages/                # Login, Register, Home, etc.
-│── index.php              # Main entry point
-│── connection.php         # Database connection
-│── README.md              # Project documentation
+SQLI-MiniProject/
+│── PHPMailer/            # PHPMailer for email verification  
+│── SQLI/                 # Main project folder  
+│   ├── about.php         # About page  
+│   ├── change-profile.php # Profile update  
+│   ├── connection.php    # Database connection  
+│   ├── contact.php       # Contact page  
+│   ├── home.php          # Home page  
+│   ├── index.php         # Login page  
+│   ├── logout.php        # Logout function  
+│   ├── profile.php       # User profile  
+│   ├── register.php      # Registration page  
+│   ├── view_profile.php  # View user profile  
+│   ├── php_security.sql  # MySQL Database script  
+│── uploads/              # Folder for file uploads  
+│── .gitignore            # Git ignore file  
+│── README.md             # Project documentation  
 ```
 
----
+## 🔧 Installation  
 
-## ⚙️ Setup Instructions
+### 1️⃣ Prerequisites  
+- PHP (>=7.4)  
+- MySQL  
+- Apache  
+- MAMP or XAMPP  
+- Linux environment (for testing with Hydra)  
 
-### 1️⃣ Clone the Repository  
-```bash
-git clone https://github.com/codeypas/SQLI-miniproject-.git
-cd SQLI-miniproject-
+### 2️⃣ Setup Instructions  
+
+```sh
+# Clone the repository
+git clone https://github.com/codeypas/SQLI-miniproject-
+
+# Navigate to the project directory
+cd SQLI-MiniProject/SQLI
+
+# Set up database (MySQL)
+mysql -u root -p < php_security.sql
+
+# Start your local server
+php -S localhost:8000
 ```
 
-### 2️⃣ Configure MAMP for Local Testing  
-- Install [MAMP](https://www.mamp.info/) for macOS/Linux.  
-- Start **Apache & MySQL** services.
+## 🔑 Security Vulnerabilities Demonstrated  
 
-### 3️⃣ Set Up the Database  
-- Open **phpMyAdmin** and create a new database:  
-  ```sql
-  CREATE DATABASE testdb;
-  ```
-- Import the provided `database.sql` file:  
-  ```bash
-  mysql -u root -p testdb < database.sql
-  ```
-- Update **connection.php** with database credentials:  
-  ```php
-  $conn = new mysqli("localhost", "root", "", "testdb");
-  ```
+### 🛑 SQL Injection (SQLi)  
+- The login form was initially vulnerable to SQL injection due to improper input handling.  
+- A prepared statement (`mysqli_prepare`) is now used to prevent injection attacks.  
 
-### 4️⃣ Install PHPMailer  
-```bash
-composer require phpmailer/phpmailer
-```
+### 🛑 Brute-Force Attacks  
+- Hydra is used to perform brute-force login attempts on the system.  
+- Rate-limiting and CAPTCHA can be added to prevent such attacks.  
 
----
+### 🛑 Plaintext Password Storage  
+- Initially, passwords were stored in plaintext, making them vulnerable.  
+- Now, `password_hash()` is used for hashing passwords securely.  
 
-## 🛡️ Brute-Force Attack Demonstration using Hydra  
+## 🔍 Demonstration of Hydra Brute Force Attack  
 
-### 1️⃣ Install Hydra on Linux  
-```bash
-sudo apt update && sudo apt install hydra -y
-```
-
-### 2️⃣ Execute Brute-Force Attack  
-```bash
-hydra -l admin -P password_list.txt 127.0.0.1 http-post-form "/login.php:email=^USER^&pswd=^PASS^:Invalid username or password"
-```
-
-### 🔍 Explanation:  
-- `-l admin` → Attempts brute-force on "admin"  
-- `-P password_list.txt` → Uses a dictionary attack  
-- `127.0.0.1` → Targets the localhost server  
-- `http-post-form` → Specifies form submission  
-- `/login.php` → The vulnerable login script  
-- `"Invalid username or password"` → Identifies failed attempts  
-
----
-
-## 🔐 Security Fixes & Prevention
-
-✅ **Use password hashing** (`password_hash()` and `password_verify()`).  
-✅ **Implement rate limiting** (restrict login attempts per IP).  
-✅ **Enable CAPTCHA** to prevent automated brute-force attacks.  
-✅ **Enforce multi-factor authentication (MFA).**  
-
----
-
-## ⚠️ Disclaimer
-
-> **This project is for educational purposes only.**  
-> Do **NOT** use it for unethical hacking or unauthorized penetration testing. Always test vulnerabilities in a legal environment.
-
----
+```sh
+hydra -l admin -P password_list.txt 127.0.0.1 http-post-form "/index.php:username=^USER^&password=^PASS^:Invalid username or password"
+``` 
 
 ## 👨‍💻 Author  
 
 **Bijay Adhikari**  
 📌 [GitHub Profile](https://github.com/codeypas)  
-📧 Contact: your.email@example.com  
-
----
+📧 Contact: bjbestintheworld@gmail.com  
