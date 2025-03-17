@@ -81,7 +81,15 @@ php -S localhost:8000
 
 ```sh
 hydra -l admin -P password_list.txt 127.0.0.1 http-post-form "/index.php:username=^USER^&password=^PASS^:Invalid username or password"
-``` 
+```
+
+
+
+## ⚠️ Disclaimer
+
+> **This project is for educational purposes only.**  
+> Do **NOT** use it for unethical hacking or unauthorized penetration testing. Always test vulnerabilities in a legal environment.
+
 
 ## 👨‍💻 Author  
 
